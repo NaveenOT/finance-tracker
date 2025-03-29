@@ -3,6 +3,7 @@ import 'package:firstapp/pages/dashboard.dart';
 import 'package:firstapp/pages/input.dart';
 import 'package:firstapp/pages/transactions.dart';
 import 'package:flutter/material.dart';//complex and simple elements
+
 void main(){  
   runApp( MyApp() );//global function which takes a single widget as an argument and inflate it to screen
   

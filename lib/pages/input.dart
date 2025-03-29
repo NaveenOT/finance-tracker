@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:firstapp/database.dart';
+
 
 class Input extends StatefulWidget {
   const Input({super.key});
@@ -25,11 +27,12 @@ class Transaction{
 }
 
 class _InputState extends State<Input> {
-  DateTime? selectedDate = DateTime.now();
+  final DatabaseService? _transactions = DatabaseService.instance;
+  DateTime? selectedDate;
   int _amount = 0;
   bool _credit = true;
-  String?  _type;
-  String? note;
+  String? _type = "";
+  String? note = "";
   Transaction? transaction;
   @override
   Widget build(BuildContext context) {
@@ -135,7 +138,12 @@ class _InputState extends State<Input> {
                     type: _type,
                     note: note,
                     );
-                  }),
+                  }
+                  
+                  ),
+                
+                    _transactions!.addTransaction(transaction!.amount, transaction!.date ?? DateTime.now(), transaction!.credit, transaction!.type ?? "", transaction!.note ?? ""),    
+                  
                   print("Transaction: $transaction, ${transaction?.amount}, ${transaction?.credit}, ${transaction?.date}, ${transaction?.type}, ${transaction?.note}"),
                 },
                 child: const Text('ADD TRANSACTION'),

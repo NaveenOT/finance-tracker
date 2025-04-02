@@ -87,4 +87,8 @@ class DatabaseService {
     final List<Map<String, dynamic>> data = await db.query("transactions");
     return data.map((map) => Transaction.fromMap(map)).toList();
   }
+  void removeTransactions(int id) async{
+    final db = await database;
+    await db.delete("transactions", where: 'id = $id');
+  }
 }

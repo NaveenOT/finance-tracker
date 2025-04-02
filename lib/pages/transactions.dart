@@ -63,7 +63,18 @@ class _TransactionsState extends State<Transactions> {
                                 Text("Type: ${_list![index].type}"),
                                 Text("Date: ${_list![index].date}"),
                                 Text("Note: ${_list![index].note}"),
-                                TextButton(onPressed: null, child: Text('Delete')),
+                                ElevatedButton(onPressed:(){
+                                  _transactions.removeTransactions(_list![index].id);
+                                  setState(() {
+                                    _list!.removeAt(index);
+                                  });
+                                }, child:Text("Delete", style: const TextStyle(
+                                  backgroundColor: Colors.black,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20,
+            
+                                ),)),
                               ],
                             ),
                           ),

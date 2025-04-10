@@ -11,20 +11,27 @@ class DashBoard extends StatefulWidget {
 }
 
 class _DashBoardState extends State<DashBoard> {
-  @override
-  Widget build(BuildContext context) {
-    final db.DatabaseService _transactions = db.DatabaseService.instance;
+  final db.DatabaseService _transactions = db.DatabaseService.instance;
     List<db.Transaction>? _list;
     List<int>? last5;
     List<int>? _amount;
-     Future<void> fetchTransactions() async {
+    
+  @override
+  void initState(){
+    super.initState();
+    fetchTransactions();
+  }
+   Future<void> fetchTransactions() async {
       List<db.Transaction> temp = await _transactions.getTransactions();
       setState(() {
         _list = temp;
         _amount = _list!.map((_list)=>_list.amount).toList();
-        last5 = _amount!.sublist(_amount!.length - 5);
+        last5 = _amount!.length >= 5 ? _amount!.sublist(_amount!.length - 5) : _amount;
+
       });
   }
+  @override
+  Widget build(BuildContext context) {
    return Column(
     children: [
       Container(
@@ -38,12 +45,30 @@ class _DashBoardState extends State<DashBoard> {
                 ),
                 ),         
       ),
-      LineChart(
-        LineChartData(lineBarsData: _amount)
+      const SizedBox(height: 20),
+      last5.length <= 0 ? const CircularProgressIndicator() :
+      SizedBox(
+        height: 300,
+        child: LineChart(
+        LineChartData(
+         lineBarsData: [
+          LineChartBarData(
+            spots: List.generate(last5!.length, (index){
+              return FlSpot(index.toDouble(), last5![index].toDouble());
+            }),
+            isCurved: true,
+
+          )
+         ]
+        )
+        // to finish
+      ) ,
       )
+     
 
     ]
     );
             
   }
+
 }
